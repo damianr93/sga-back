@@ -1,26 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateSpecialLiquidDto } from './dto/create-special-liquid.dto';
 import { UpdateSpecialLiquidDto } from './dto/update-special-liquid.dto';
+import { Model } from 'mongoose';
+import { SpecialLiquids } from './interface/special-liquids.interface';
 
 @Injectable()
 export class SpecialLiquidsService {
+
+  constructor(
+    @Inject("SPECIAL-LIQUIDS-MODEL")
+    private readonly specialLiquids: Model<SpecialLiquids>
+  ){}
+
   create(createSpecialLiquidDto: CreateSpecialLiquidDto) {
-    return 'This action adds a new specialLiquid';
+    return this.specialLiquids.create(createSpecialLiquidDto);
   }
 
   findAll() {
-    return `This action returns all specialLiquids`;
+    return this.specialLiquids.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} specialLiquid`;
+  findOne(id: string) {
+    return this.specialLiquids.findById(id);
   }
 
-  update(id: number, updateSpecialLiquidDto: UpdateSpecialLiquidDto) {
-    return `This action updates a #${id} specialLiquid`;
+  update(id: string, updateSpecialLiquidDto: UpdateSpecialLiquidDto) {
+    return this.specialLiquids.findByIdAndUpdate(id, updateSpecialLiquidDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} specialLiquid`;
+  remove(id: string) {
+    return this.specialLiquids.findByIdAndDelete(id);
   }
 }

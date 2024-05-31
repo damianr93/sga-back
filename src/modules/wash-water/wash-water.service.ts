@@ -1,26 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateWashWaterDto } from './dto/create-wash-water.dto';
 import { UpdateWashWaterDto } from './dto/update-wash-water.dto';
+import { Model } from 'mongoose';
+import { WashWater } from './interface/wash-water.interface';
 
 @Injectable()
 export class WashWaterService {
+
+  constructor(
+    @Inject('WASH_WATER_MODEL')
+    private readonly washWater: Model<WashWater>
+  ){}
+
   create(createWashWaterDto: CreateWashWaterDto) {
-    return 'This action adds a new washWater';
+    return this.washWater.create(createWashWaterDto);
   }
 
   findAll() {
-    return `This action returns all washWater`;
+    return this.washWater.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} washWater`;
+  findOne(id: string) {
+    return this.washWater.findById(id);
   }
 
-  update(id: number, updateWashWaterDto: UpdateWashWaterDto) {
-    return `This action updates a #${id} washWater`;
+  update(id: string, updateWashWaterDto: UpdateWashWaterDto) {
+    return this.washWater.findByIdAndUpdate(id, updateWashWaterDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} washWater`;
+  remove(id: string) {
+    return this.washWater.findByIdAndDelete(id);
   }
 }

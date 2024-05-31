@@ -19,16 +19,16 @@ export class SpecialLiquidsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.specialLiquidsService.findOne(+id);
+    return this.specialLiquidsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSpecialLiquidDto: UpdateSpecialLiquidDto) {
-    return this.specialLiquidsService.update(+id, updateSpecialLiquidDto);
+    return this.specialLiquidsService.update(id, updateSpecialLiquidDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.specialLiquidsService.remove(+id);
+    return this.specialLiquidsService.remove(id);
   }
 }

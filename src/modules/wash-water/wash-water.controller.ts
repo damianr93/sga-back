@@ -19,16 +19,16 @@ export class WashWaterController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.washWaterService.findOne(+id);
+    return this.washWaterService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateWashWaterDto: UpdateWashWaterDto) {
-    return this.washWaterService.update(+id, updateWashWaterDto);
+    return this.washWaterService.update(id, updateWashWaterDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.washWaterService.remove(+id);
+    return this.washWaterService.remove(id);
   }
 }

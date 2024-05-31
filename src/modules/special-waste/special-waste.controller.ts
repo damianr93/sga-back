@@ -19,16 +19,16 @@ export class SpecialWasteController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.specialWasteService.findOne(+id);
+    return this.specialWasteService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSpecialWasteDto: UpdateSpecialWasteDto) {
-    return this.specialWasteService.update(+id, updateSpecialWasteDto);
+    return this.specialWasteService.update(id, updateSpecialWasteDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.specialWasteService.remove(+id);
+    return this.specialWasteService.remove(id);
   }
 }
