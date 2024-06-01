@@ -19,16 +19,16 @@ export class MetalWasteController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.metalWasteService.findOne(+id);
+    return this.metalWasteService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMetalWasteDto: UpdateMetalWasteDto) {
-    return this.metalWasteService.update(+id, updateMetalWasteDto);
+    return this.metalWasteService.update(id, updateMetalWasteDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.metalWasteService.remove(+id);
+    return this.metalWasteService.remove(id);
   }
 }

@@ -1,26 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateMetalWasteDto } from './dto/create-metal-waste.dto';
 import { UpdateMetalWasteDto } from './dto/update-metal-waste.dto';
+import { MetalWaste } from './interface/metal-waste.interface';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class MetalWasteService {
+
+  constructor(
+    @Inject('METAL-WASTE-MODEL')
+    private readonly metalWaste:Model<MetalWaste>
+  ){}
+
   create(createMetalWasteDto: CreateMetalWasteDto) {
-    return 'This action adds a new metalWaste';
+    return this.metalWaste.create(createMetalWasteDto);
   }
 
   findAll() {
-    return `This action returns all metalWaste`;
+    return this.metalWaste.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} metalWaste`;
+  findOne(id: string) {
+    return this.metalWaste.findById(id);
   }
 
-  update(id: number, updateMetalWasteDto: UpdateMetalWasteDto) {
-    return `This action updates a #${id} metalWaste`;
+  update(id: string, updateMetalWasteDto: UpdateMetalWasteDto) {
+    return this.metalWaste.findByIdAndUpdate(id, updateMetalWasteDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} metalWaste`;
+  remove(id: string) {
+    return this.metalWaste.findByIdAndDelete(id);
   }
 }
