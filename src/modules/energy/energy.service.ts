@@ -1,26 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateEnergyDto } from './dto/create-energy.dto';
 import { UpdateEnergyDto } from './dto/update-energy.dto';
+import { Model } from 'mongoose';
+import { Energy } from './interface/enerfy.interface';
 
 @Injectable()
 export class EnergyService {
+
+  constructor(
+    @Inject('ENERGY-MODEL')
+    private readonly energy: Model<Energy>
+  ){}
+
   create(createEnergyDto: CreateEnergyDto) {
-    return 'This action adds a new energy';
+    return this.energy.create(createEnergyDto);
   }
 
   findAll() {
-    return `This action returns all energy`;
+    return this.energy.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} energy`;
+  findOne(id: string) {
+    return this.energy.findById(id);
   }
 
-  update(id: number, updateEnergyDto: UpdateEnergyDto) {
-    return `This action updates a #${id} energy`;
+  update(id: string, updateEnergyDto: UpdateEnergyDto) {
+    return this.energy.findByIdAndUpdate(id, updateEnergyDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} energy`;
+  remove(id: string) {
+    return this.energy.findByIdAndDelete(id);
   }
 }

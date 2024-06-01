@@ -19,16 +19,16 @@ export class EnergyController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.energyService.findOne(+id);
+    return this.energyService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEnergyDto: UpdateEnergyDto) {
-    return this.energyService.update(+id, updateEnergyDto);
+    return this.energyService.update(id, updateEnergyDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.energyService.remove(+id);
+    return this.energyService.remove(id);
   }
 }
