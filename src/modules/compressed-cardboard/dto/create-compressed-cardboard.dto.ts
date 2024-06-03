@@ -12,7 +12,7 @@ export class CreateCompressedCardboardDto {
     medidoPor:string
     
     @ApiProperty({
-        example: '3,60',
+        example: '3',
         description: 'total in compressed',
     })
     @IsNotEmpty()

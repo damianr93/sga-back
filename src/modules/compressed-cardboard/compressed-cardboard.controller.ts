@@ -19,16 +19,16 @@ export class CompressedCardboardController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.compressedCardboardService.findOne(+id);
+    return this.compressedCardboardService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCompressedCardboardDto: UpdateCompressedCardboardDto) {
-    return this.compressedCardboardService.update(+id, updateCompressedCardboardDto);
+    return this.compressedCardboardService.update(id, updateCompressedCardboardDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.compressedCardboardService.remove(+id);
+    return this.compressedCardboardService.remove(id);
   }
 }
