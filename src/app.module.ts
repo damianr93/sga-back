@@ -11,6 +11,7 @@ import { SpecialWasteModule } from './modules/special-waste/special-waste.module
 import { UsersModule } from './modules/users/users.module';
 import { EnergyModule } from './modules/energy/energy.module';
 import { CompressedCardboardModule } from './modules/compressed-cardboard/compressed-cardboard.module';
+import { WasteModule } from './modules/waste/waste.module';
 
 
 @Module({
@@ -24,7 +25,7 @@ import { CompressedCardboardModule } from './modules/compressed-cardboard/compre
     UsersModule,
     EnergyModule,
     CompressedCardboardModule,
-     
+     WasteModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],

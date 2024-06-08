@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSpecialWasteDto } from './dto/create-special-waste.dto';
 import { UpdateSpecialWasteDto } from './dto/update-special-waste.dto';
 import { Model } from 'mongoose';
@@ -16,8 +16,22 @@ export class SpecialWasteService {
     return this.specialWaste.create(createSpecialWasteDto);
   }
 
-  findAll() {
-    return this.specialWaste.find();
+  async findAll() {
+  
+    const data = await this.specialWaste.find()
+    if(data.length === 0) return new NotFoundException({message:'No hay datos'})
+    let lastRegister = data.pop()
+
+    const dataToExport = {
+      id: lastRegister.id,
+      medidoPor: lastRegister.medidoPor,
+      consumo: lastRegister.consumo,
+      createdAt: lastRegister.createdAt,
+      history: data
+    };
+
+    
+    return dataToExport;
   }
 
   findOne(id: string) {

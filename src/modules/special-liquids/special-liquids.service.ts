@@ -1,8 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSpecialLiquidDto } from './dto/create-special-liquid.dto';
 import { UpdateSpecialLiquidDto } from './dto/update-special-liquid.dto';
 import { Model } from 'mongoose';
 import { SpecialLiquids } from './interface/special-liquids.interface';
+
 
 @Injectable()
 export class SpecialLiquidsService {
@@ -16,8 +17,27 @@ export class SpecialLiquidsService {
     return this.specialLiquids.create(createSpecialLiquidDto);
   }
 
-  findAll() {
-    return this.specialLiquids.find();
+  async findAll() {
+    const data = await this.specialLiquids.find()
+    if(data.length === 0) return new NotFoundException({message:'No hay datos'})
+    let total = 0
+
+    data.forEach((dat) => {
+      total += dat.liters
+    })
+
+    const lastRegister = data.pop()
+
+    const dataToExport = {
+      id: lastRegister.id,
+      carrier: lastRegister.carrier,
+      liters: lastRegister.liters,
+      createdAt: lastRegister.createdAt,
+      total,
+      history: data
+    }
+
+    return dataToExport;
   }
 
   findOne(id: string) {

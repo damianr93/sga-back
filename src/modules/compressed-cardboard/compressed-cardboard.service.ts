@@ -17,7 +17,9 @@ export class CompressedCardboardService {
   }
 
   findAll() {
-    return this.compressedCardboard.find();
+    const data = this.compressedCardboard.find()
+
+    return data;
   }
 
   findOne(id: string) {

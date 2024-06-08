@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMetalWasteDto } from './dto/create-metal-waste.dto';
 import { UpdateMetalWasteDto } from './dto/update-metal-waste.dto';
 import { MetalWaste } from './interface/metal-waste.interface';
@@ -9,15 +9,27 @@ export class MetalWasteService {
 
   constructor(
     @Inject('METAL-WASTE-MODEL')
-    private readonly metalWaste:Model<MetalWaste>
-  ){}
+    private readonly metalWaste: Model<MetalWaste>
+  ) { }
 
   create(createMetalWasteDto: CreateMetalWasteDto) {
     return this.metalWaste.create(createMetalWasteDto);
   }
 
-  findAll() {
-    return this.metalWaste.find();
+  async findAll() {
+    const data = await this.metalWaste.find()
+    if (data.length === 0) return new NotFoundException({ message: 'No hay datos' })
+    let lastRegister = data.pop()
+
+    const dataToExport = {
+      id: lastRegister.id,
+      medidoPor: lastRegister.medidoPor,
+      consumo: lastRegister.peso,
+      createdAt: lastRegister.createdAt,
+      history: data
+    };
+
+    return dataToExport;
   }
 
   findOne(id: string) {
