@@ -1,5 +1,5 @@
 export interface MetalWaste {
-    readonly medidoPor:string
-    readonly peso:number
+    readonly createdBy:string
+    readonly measurement:number
     readonly createdAt:Date
 }

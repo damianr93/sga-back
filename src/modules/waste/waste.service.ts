@@ -23,8 +23,8 @@ export class WasteService {
 
     const dataToExport = {
       id: lastRegister.id,
-      medidoPor: lastRegister.medidoPor,
-      consumo: lastRegister.consumo,
+      createdBy: lastRegister.createdBy,
+      measurement: lastRegister.measurement,
       createdAt: lastRegister.createdAt,
       history: data
     };

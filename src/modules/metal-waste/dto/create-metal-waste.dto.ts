@@ -8,7 +8,7 @@ export class CreateMetalWasteDto {
     })
     @IsString({ message: 'user must be a string' })
     @IsNotEmpty({ message: 'user is required' })
-    medidoPor: string;
+    createdBy: string;
 
     @ApiProperty({
         example: '360',
@@ -16,7 +16,7 @@ export class CreateMetalWasteDto {
     })
     @IsNotEmpty()
     @IsNumber()
-    peso: number;
+    measurement: number;
 
     @ApiProperty({
         example: '02/01/2024',

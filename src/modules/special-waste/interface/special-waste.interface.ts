@@ -1,7 +1,7 @@
 
 
 export interface SpecialWaste {
-    readonly medidoPor:string,
-    readonly consumo:number,
+    readonly createdBy:string,
+    readonly measurement:number,
     readonly createdAt:Date
 }

@@ -2,11 +2,8 @@ import mongoose from "mongoose";
 
 
 export const specialLiquidsSchema = new mongoose.Schema({
-    carrier: String,
-    liters: {
-        type:Number,
-        require: true
-    },
+    createdBy: String,
+    measurement: Number,
     createdAt: {
         type: String,
         default: new Date().toLocaleDateString('es-AR', {

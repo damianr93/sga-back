@@ -1,7 +1,7 @@
 
 
 export interface SpecialLiquids {
-    readonly carrier:string,
-    readonly liters:number,
+    readonly createdBy:string,
+    readonly measurement:number,
     readonly createdAt:Date
 }

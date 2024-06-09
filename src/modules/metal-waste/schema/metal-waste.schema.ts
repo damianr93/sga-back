@@ -2,11 +2,8 @@ import mongoose from "mongoose";
 
 
 export const metalWasteSchema = new mongoose.Schema({
-    medidoPor: String,
-    peso: {
-        type:Number,
-        require: true
-    },
+    createdBy: String,
+    measurement:Number,
     createdAt: {
         type: String,
         default: new Date().toLocaleDateString('es-AR', {

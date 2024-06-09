@@ -20,20 +20,14 @@ export class SpecialLiquidsService {
   async findAll() {
     const data = await this.specialLiquids.find()
     if(data.length === 0) return new NotFoundException({message:'No hay datos'})
-    let total = 0
-
-    data.forEach((dat) => {
-      total += dat.liters
-    })
 
     const lastRegister = data.pop()
 
     const dataToExport = {
       id: lastRegister.id,
-      carrier: lastRegister.carrier,
-      liters: lastRegister.liters,
+      createdBy: lastRegister.createdBy,
+      measurement: lastRegister.measurement,
       createdAt: lastRegister.createdAt,
-      total,
       history: data
     }
 

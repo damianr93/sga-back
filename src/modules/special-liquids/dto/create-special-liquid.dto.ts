@@ -9,7 +9,7 @@ export class CreateSpecialLiquidDto {
     })
     @IsString({ message: 'carrier must be a string' })
     @IsNotEmpty({ message: 'carrier is required' })
-    carrier:string
+    createdBy:string
 
     @ApiProperty({
         example: '3200',
@@ -17,7 +17,7 @@ export class CreateSpecialLiquidDto {
     })
     @IsNotEmpty()
     @IsNumber()
-    liters:number
+    measurement:number
 
     @ApiProperty({
         example: '02/01/2024',
