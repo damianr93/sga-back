@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 export const ConsumoAguaGral = new mongoose.Schema({
-    medidoPor:String,
-    consumo: Number,
+    createdBy:String,
+    measurement: Number,
     createdAt: {
         type: String,
         default: new Date().toLocaleDateString('es-AR', {

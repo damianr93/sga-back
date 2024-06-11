@@ -13,7 +13,7 @@ export class WaterService {
   ) {}
 
   create(createWaterDto: CreateWaterDto) {
-    return this.waterModel.create({createWaterDto});
+    return this.waterModel.create(createWaterDto);
   }
 
   findAll() {

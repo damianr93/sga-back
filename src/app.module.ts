@@ -13,6 +13,7 @@ import { EnergyModule } from './modules/energy/energy.module';
 import { CompressedCardboardModule } from './modules/compressed-cardboard/compressed-cardboard.module';
 import { WasteModule } from './modules/waste/waste.module';
 import { WastesDataModule } from './services/wastes-data/wastes-data.module';
+import { WaterDataModule } from './services/water-data/water-data.module';
 
 
 @Module({
@@ -27,7 +28,8 @@ import { WastesDataModule } from './services/wastes-data/wastes-data.module';
     EnergyModule,
     CompressedCardboardModule,
     WasteModule,
-    WastesDataModule
+    WastesDataModule,
+    WaterDataModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],

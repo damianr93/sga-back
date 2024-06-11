@@ -1,6 +1,6 @@
 
 export interface WashWater {
-    readonly medidoPor: string,
-    readonly consumo: number,
+    readonly createdBy: string,
+    readonly measurement: number,
     readonly createdAt: Date
 };

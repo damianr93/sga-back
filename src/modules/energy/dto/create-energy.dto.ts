@@ -9,7 +9,7 @@ export class CreateEnergyDto {
     })
     @IsString({ message: 'user must be a string' })
     @IsNotEmpty({ message: 'user is required' })
-    medidoPor:string;
+    createdBy:string;
     
     @ApiProperty({
         example: '3,60',
@@ -17,7 +17,7 @@ export class CreateEnergyDto {
     })
     @IsNotEmpty()
     @IsNumber()
-    measure:number;
+    measurement:number;
     
     @ApiProperty({
         example: '02/01/2024',

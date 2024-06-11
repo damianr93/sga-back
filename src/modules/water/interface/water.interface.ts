@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface Water extends Document {
-    readonly medidoPor:string,
-    readonly consumo: number,
+    readonly createdby:string,
+    readonly measurement: number,
     readonly createdAt: Date
 }

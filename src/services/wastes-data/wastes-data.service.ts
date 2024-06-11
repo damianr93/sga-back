@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { CompressedCardboard } from 'src/modules/compressed-cardboard/interface/compressed-cardboard.interface';
 import { MetalWaste } from 'src/modules/metal-waste/interface/metal-waste.interface';
@@ -7,8 +7,6 @@ import { SpecialWaste } from 'src/modules/special-waste/interface/special-waste.
 import { waste } from 'src/modules/waste/interface/waste.interface';
 
 const dataToExport = (data) => {
-  let lastRegister = data.pop();
-
   const serie = data.map((register) => {
     return register.measurement;
   });
@@ -19,14 +17,16 @@ const dataToExport = (data) => {
   const minimo = Math.min(...serie);
   const promedio = (maximo + minimo) / 2;
 
+  let lastRegister = data.pop()
+  
   const dataToExport = {
-    id: lastRegister.id,
+    id: lastRegister._id,
     medidoPor: lastRegister.createdBy,
-    serie,
-    total,
-    maximo,
-    minimo,
-    promedio,
+    serie: serie,
+    total: total,
+    maximo: maximo ,
+    minimo: minimo ,
+    promedio: promedio,
     consumo: lastRegister.measurement,
     fechaMedicion: lastRegister.createdAt,
     historial: data.reverse(),
@@ -60,11 +60,11 @@ export class WastesDataService {
     };
 
     const data = {
-      carton: dataToExport(rawData.carton),
-      metal: dataToExport(rawData.metal),
-      liquido: dataToExport(rawData.liquido),
-      especial: dataToExport(rawData.especial),
-      generales: dataToExport(rawData.generales),
+      carton: rawData.carton.length > 0 ? dataToExport(rawData.carton ) : "Sin datos",
+      metal: rawData.metal.length > 0 ? dataToExport(rawData.metal) : "Sin datos",
+      liquido: rawData.liquido.length > 0 ? dataToExport(rawData.liquido) : "Sin datos",
+      especial: rawData.especial.length > 0 ? dataToExport(rawData.especial) : "Sin datos",
+      generales: rawData.generales.length > 0 ? dataToExport(rawData.generales) : "Sin datos",
     };
 
     return data;

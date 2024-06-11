@@ -8,7 +8,7 @@ export class CreateWashWaterDto{
     })
     @IsString({ message: 'name must be a string' })
     @IsNotEmpty({ message: 'name is required' })
-    medidoPor:string
+    createdBy:string
 
     @ApiProperty({
         example: '1.3562',
@@ -16,7 +16,7 @@ export class CreateWashWaterDto{
     })
     @IsNotEmpty()
     @IsNumber()
-    consumo:number
+    measurement:number
 
     @ApiProperty({
         example: '02/01/2024',

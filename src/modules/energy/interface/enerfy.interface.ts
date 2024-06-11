@@ -1,7 +1,7 @@
 
 
 export interface Energy {
-    readonly medidoPor:string,
-    readonly measure:number,
+    readonly createdBy:string,
+    readonly measurement:number,
     readonly createdAt:Date
 }

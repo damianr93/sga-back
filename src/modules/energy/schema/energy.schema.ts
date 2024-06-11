@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 
 export const energySchema = new mongoose.Schema({
-    medidoPor: String,
-    measure: Number,
+    createdBy: String,
+    measurement: Number,
     createdAt: {
         type: String,
         default: new Date().toLocaleDateString('es-AR', {
