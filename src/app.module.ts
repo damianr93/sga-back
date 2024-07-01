@@ -14,6 +14,7 @@ import { CompressedCardboardModule } from './modules/compressed-cardboard/compre
 import { WasteModule } from './modules/waste/waste.module';
 import { WastesDataModule } from './services/wastes-data/wastes-data.module';
 import { WaterDataModule } from './services/water-data/water-data.module';
+import { PoliticsModule } from './modules/politics/politics.module';
 
 
 @Module({
@@ -29,7 +30,8 @@ import { WaterDataModule } from './services/water-data/water-data.module';
     CompressedCardboardModule,
     WasteModule,
     WastesDataModule,
-    WaterDataModule
+    WaterDataModule,
+    PoliticsModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],
