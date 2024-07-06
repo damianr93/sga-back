@@ -21,14 +21,14 @@ export class PoliticsService {
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} politic`;
+    return this.politicsModel.findById(id);
   }
 
   update(id: string, updatePoliticDto: UpdatePoliticDto) {
-    return `This action updates a #${id} politic`;
+    return this.politicsModel.findByIdAndUpdate(id, updatePoliticDto);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} politic`;
+    return this.politicsModel.findByIdAndDelete(id);
   }
 }
