@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 
 export const politicsSchema = new mongoose.Schema({
     introduction:String,
-    politics:[String]
+    politics:[String],
+    targets:[String]
 });
 
 politicsSchema.set('toJSON', {
