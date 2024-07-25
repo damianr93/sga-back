@@ -15,6 +15,7 @@ import { WasteModule } from './modules/waste/waste.module';
 import { WastesDataModule } from './services/wastes-data/wastes-data.module';
 import { WaterDataModule } from './services/water-data/water-data.module';
 import { PoliticsModule } from './modules/politics/politics.module';
+import { ContextAnalysisModule } from './modules/context-analysis/context-analysis.module';
 
 
 @Module({
@@ -31,7 +32,8 @@ import { PoliticsModule } from './modules/politics/politics.module';
     WasteModule,
     WastesDataModule,
     WaterDataModule,
-    PoliticsModule
+    PoliticsModule,
+    ContextAnalysisModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],
