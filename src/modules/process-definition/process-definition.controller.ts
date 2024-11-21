@@ -19,16 +19,16 @@ export class ProcessDefinitionController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.processDefinitionService.findOne(+id);
+    return this.processDefinitionService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProcessDefinitionDto: UpdateProcessDefinitionDto) {
-    return this.processDefinitionService.update(+id, updateProcessDefinitionDto);
+    return this.processDefinitionService.update(id, updateProcessDefinitionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.processDefinitionService.remove(+id);
+    return this.processDefinitionService.remove(id);
   }
 }

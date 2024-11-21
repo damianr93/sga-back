@@ -1,26 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateProcessDefinitionDto } from './dto/create-process-definition.dto';
 import { UpdateProcessDefinitionDto } from './dto/update-process-definition.dto';
+import { Model } from 'mongoose';
+import { ProcessDefinition } from './interface/process-definition.interface';
 
 @Injectable()
 export class ProcessDefinitionService {
+
+  constructor(
+    @Inject('PROCCES_DEFINITION_MODEL')
+    private readonly processDefinitionModel:Model<ProcessDefinition>
+  ){}
+
   create(createProcessDefinitionDto: CreateProcessDefinitionDto) {
-    return 'This action adds a new processDefinition';
+    return this.processDefinitionModel.create(createProcessDefinitionDto);
   }
 
   findAll() {
-    return `This action returns all processDefinition`;
+    return this.processDefinitionModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} processDefinition`;
+  findOne(id: string) {
+    return this.processDefinitionModel.findById(id);
   }
 
-  update(id: number, updateProcessDefinitionDto: UpdateProcessDefinitionDto) {
-    return `This action updates a #${id} processDefinition`;
+  update(id: string, updateProcessDefinitionDto: UpdateProcessDefinitionDto) {
+    return this.processDefinitionModel.findByIdAndUpdate(id, updateProcessDefinitionDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} processDefinition`;
+  remove(id: string) {
+    return this.processDefinitionModel.findByIdAndDelete(id);
   }
 }

@@ -17,6 +17,7 @@ import { WaterDataModule } from './services/water-data/water-data.module';
 import { PoliticsModule } from './modules/politics/politics.module';
 import { ContextAnalysisModule } from './modules/context-analysis/context-analysis.module';
 import { InterestedPartiesModule } from './modules/interested-parties/interested-parties.module';
+import { ProcessDefinitionModule } from './modules/process-definition/process-definition.module';
 
 
 @Module({
@@ -35,7 +36,8 @@ import { InterestedPartiesModule } from './modules/interested-parties/interested
     WaterDataModule,
     PoliticsModule,
     ContextAnalysisModule,
-    InterestedPartiesModule
+    InterestedPartiesModule,
+    ProcessDefinitionModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],
