@@ -3,7 +3,7 @@ import { ProcessDefinitionService } from './process-definition.service';
 import { CreateProcessDefinitionDto } from './dto/create-process-definition.dto';
 import { UpdateProcessDefinitionDto } from './dto/update-process-definition.dto';
 
-@Controller('process-definition')
+@Controller('process-definitions')
 export class ProcessDefinitionController {
   constructor(private readonly processDefinitionService: ProcessDefinitionService) {}
 

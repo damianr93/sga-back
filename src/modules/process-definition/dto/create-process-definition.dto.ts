@@ -22,8 +22,8 @@ export class CreateProcessDefinitionDto {
         description:'type of the process for the company'
     })
     @IsNotEmpty({ message: 'Type of the process is requires' })
-    @IsEnum(['Principal', 'Operativo', 'Soporte', 'Gestion'],
-        {message:'type must be one of the following values: Principal, operativo, soporte o gestion'})
+    @IsEnum(['Estrategicos', 'Operativo', 'Soporte'],
+        {message:'type must be one of the following values: Estrategicos, operativo, soporte'})
     type:String;
 
     @ApiProperty({
@@ -33,10 +33,5 @@ export class CreateProcessDefinitionDto {
     @IsString({message:'description is string'})
     @IsNotEmpty({message:'description is required'})
     description:String;
-
-    @ApiProperty({
-        example:'Venta de usados, venta de 0km, etc'
-    })
-    subProcess:[String];
 
 };

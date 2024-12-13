@@ -7,7 +7,6 @@ export const processDefinitionSchema = new mongoose.Schema({
     name:String,
     type:String,
     description:String,
-    subProcess:[String],
 
 });
 

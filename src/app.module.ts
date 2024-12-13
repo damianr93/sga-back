@@ -18,6 +18,7 @@ import { PoliticsModule } from './modules/politics/politics.module';
 import { ContextAnalysisModule } from './modules/context-analysis/context-analysis.module';
 import { InterestedPartiesModule } from './modules/interested-parties/interested-parties.module';
 import { ProcessDefinitionModule } from './modules/process-definition/process-definition.module';
+import { AuthModule } from './auth/auth/auth.module';
 
 
 @Module({
@@ -37,7 +38,8 @@ import { ProcessDefinitionModule } from './modules/process-definition/process-de
     PoliticsModule,
     ContextAnalysisModule,
     InterestedPartiesModule,
-    ProcessDefinitionModule
+    ProcessDefinitionModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],

@@ -9,12 +9,7 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+    return this.usersService.register(createUserDto);
   }
 
   @Get(':id')
