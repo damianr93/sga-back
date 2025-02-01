@@ -11,7 +11,6 @@ export class AuthController {
     @HttpCode(HttpStatus.OK) 
     @Post('login')
     signIn(@Body() sinInDto: Record <string, any>) { //TODO: Implementar DTO
-        
        return this.authService.signIn(sinInDto.username, sinInDto.password)
 
     };

@@ -18,7 +18,7 @@ import { PoliticsModule } from './modules/politics/politics.module';
 import { ContextAnalysisModule } from './modules/context-analysis/context-analysis.module';
 import { InterestedPartiesModule } from './modules/interested-parties/interested-parties.module';
 import { ProcessDefinitionModule } from './modules/process-definition/process-definition.module';
-import { AuthModule } from './auth/auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 
 @Module({
