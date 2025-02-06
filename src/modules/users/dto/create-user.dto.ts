@@ -24,6 +24,15 @@ export class CreateUserDto {
     @IsEnum(['Lavadero', 'Taller', 'Chapa-pintura', 'Asesoria Tecnica', 'Admin', 'Gerencia', 'Sector comercial'], 
         {message:'sector must be one of the following values: Lavadero, Taller, Chapa-pintura, Asesoria Tecnica, Admin, Gerencia, Sector comercial'})
     sector: string
+
+    @ApiProperty({
+        example: 'admin',
+        description: 'role of the user',
+    })
+    @IsString({ message: 'The role of the user must be string' })   
+    @IsNotEmpty({ message: 'The role of the user is requires' })
+    @IsEnum(['admin', 'user'], {message:'role must be one of the following values: admin, user'})
+    role: string
     
     @ApiProperty({
         example: '0303456',

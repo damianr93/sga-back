@@ -4,6 +4,11 @@ import mongoose from "mongoose";
 export const userSchema = new mongoose.Schema({
     username: String,
     sector: String,
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'user'
+    },
     password: String
 });
 
