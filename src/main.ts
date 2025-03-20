@@ -6,6 +6,8 @@ import * as compression from 'compression'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { MyLogger } from './services/logger/logger';
 import { ConfigService } from '@nestjs/config';
+import { env } from 'process';
+import { envs } from './config/envs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,7 +35,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(3000);
-}
+  await app.listen(envs.PORT);
+};
 bootstrap();
 
