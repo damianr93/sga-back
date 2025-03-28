@@ -21,11 +21,11 @@ export class ProcessDefinitionService {
   }
 
   findOne(id: string) {
-    return this.processDefinitionModel.findById(id);
+    return this.processDefinitionModel.findById(id)
   }
 
   update(id: string, updateProcessDefinitionDto: UpdateProcessDefinitionDto) {
-    return this.processDefinitionModel.findByIdAndUpdate(id, updateProcessDefinitionDto);
+    return this.processDefinitionModel.findByIdAndUpdate(id, updateProcessDefinitionDto, {new: true});
   }
 
   remove(id: string) {

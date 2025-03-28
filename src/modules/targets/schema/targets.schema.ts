@@ -1,16 +1,14 @@
 import mongoose from "mongoose";
 
 
+export const TargetsSchema = new mongoose.Schema({
+    description: { type: String, required: true}
+})
 
-export const politicsSchema = new mongoose.Schema({
-    introduction:String,
-    politics:[String],
-});
-
-politicsSchema.set('toJSON', {
+TargetsSchema.set('toJSON', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret, options) {
         delete ret._id;
     },
-});
+})

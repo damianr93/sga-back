@@ -16,11 +16,4 @@ export class CreatePoliticDto {
     })
     @IsArray({message:'politics must be array'})
     politics:[];
-
-    @ApiProperty({
-        example:'Disminuir el consumo de agua en un ... %',
-        description:'targets assumed by the company'
-    })
-    @IsArray({message:'targets must be array'})
-    targets:[];
 };

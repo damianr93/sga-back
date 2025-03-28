@@ -7,6 +7,10 @@ export const processDefinitionSchema = new mongoose.Schema({
     name:String,
     type:String,
     description:String,
+    alcanzado: {
+        type:Boolean,
+        default: false
+    }
 
 });
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, isString, IsString } from "class-validator";
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, isString, IsString } from "class-validator";
 
 export class CreateProcessDefinitionDto {
 
@@ -33,5 +33,12 @@ export class CreateProcessDefinitionDto {
     @IsString({message:'description is string'})
     @IsNotEmpty({message:'description is required'})
     description:String;
+
+    @ApiProperty({
+        description:'whether the process is reached by the management system or not',
+    })
+    @IsBoolean()
+    @IsOptional()
+    alcanzado:Boolean
 
 };

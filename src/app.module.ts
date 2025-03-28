@@ -19,6 +19,7 @@ import { ContextAnalysisModule } from './modules/context-analysis/context-analys
 import { InterestedPartiesModule } from './modules/interested-parties/interested-parties.module';
 import { ProcessDefinitionModule } from './modules/process-definition/process-definition.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { TargetsModule } from './modules/targets/targets.module';
 
 
 @Module({
@@ -39,6 +40,7 @@ import { AuthModule } from './modules/auth/auth.module';
     ContextAnalysisModule,
     InterestedPartiesModule,
     ProcessDefinitionModule,
+    TargetsModule,
     AuthModule
   ],
   controllers: [AppController],
