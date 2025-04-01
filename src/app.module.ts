@@ -20,6 +20,7 @@ import { InterestedPartiesModule } from './modules/interested-parties/interested
 import { ProcessDefinitionModule } from './modules/process-definition/process-definition.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { TargetsModule } from './modules/targets/targets.module';
+import { RiskAndOpportunitiesModule } from './modules/risk-and-opportunities/risk-and-opportunities.module';
 
 
 @Module({
@@ -41,7 +42,8 @@ import { TargetsModule } from './modules/targets/targets.module';
     InterestedPartiesModule,
     ProcessDefinitionModule,
     TargetsModule,
-    AuthModule
+    AuthModule,
+    RiskAndOpportunitiesModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],
