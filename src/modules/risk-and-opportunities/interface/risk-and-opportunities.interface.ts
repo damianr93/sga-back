@@ -6,15 +6,15 @@ export interface RiesgoOportunidad extends Document {
   process: Types.ObjectId;
   type: 'riesgo' | 'oportunidad';
   description: string;
-  probabilidad?: string;
-  ocurrencia?: string;
+  probabilidad?: number;
+  ocurrencia?: number;
   probabilidadDeOcurencia?: number;
-  perdidaDeClientesPotencial?: string;
-  dañoPotencial?: string;
-  conflictosGremialesPosibles?: string;
-  incumplimientoLegal?: string;
-  perdidaDeImagen?: string;
-  costoCorreccion?: string;
+  perdidaDeClientesPotencial?: number;
+  dañoPotencial?: number;
+  conflictosGremialesPosibles?: number;
+  incumplimientoLegal?: number;
+  perdidaDeImagen?: number;
+  costoCorreccion?: number;
   consecuencia?: number;
   factorDeRiesgo?: number;
 }

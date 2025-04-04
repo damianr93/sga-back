@@ -1,6 +1,6 @@
 import { Model } from "mongoose";
 import { RiesgoOportunidad } from "./interface/risk-and-opportunities.interface";
-import { BadRequestException, Inject, NotFoundException } from "@nestjs/common";
+import { BadRequestException, HttpException, HttpStatus, Inject, NotFoundException } from "@nestjs/common";
 import { CreateRiskAndOpportunityDto } from "./dto/create-risk-and-opportunity.dto";
 import { UpdateRiskAndOpportunityDto } from "./dto/update-risk-and-opportunity.dto";
 
@@ -11,19 +11,94 @@ export class RiskAndOpportunitiesService {
   ) { }
 
   async create(createRiskAndOpportunityDto: CreateRiskAndOpportunityDto): Promise<RiesgoOportunidad> {
-    const createdRiskOpportunity = await this.riskOportunitiesModel.create(createRiskAndOpportunityDto);
-    return this.riskOportunitiesModel.findById(createdRiskOpportunity._id)
-      .populate('contexto')
-      .populate('partesInteresadas')
-      .populate('process')
-      .exec();
+    try {
+      const {
+        probabilidad,
+        ocurrencia,
+        perdidaDeClientesPotencial,
+        dañoPotencial,
+        conflictosGremialesPosibles,
+        incumplimientoLegal,
+        perdidaDeImagen,
+        costoCorreccion,
+      } = createRiskAndOpportunityDto
+
+      if (probabilidad !== undefined && ocurrencia !== undefined) {
+        //Promedio simple. Tambien podria utilizarse una suma ponterada pero depende del cliente
+        const promedio = (+probabilidad + +ocurrencia) / 2
+
+        createRiskAndOpportunityDto.probabilidadDeOcurencia = promedio
+      }
+
+      if (
+        perdidaDeClientesPotencial !== undefined &&
+        dañoPotencial !== undefined &&
+        conflictosGremialesPosibles !== undefined &&
+        incumplimientoLegal !== undefined &&
+        perdidaDeImagen !== undefined &&
+        costoCorreccion !== undefined) {
+
+        createRiskAndOpportunityDto.consecuencia =
+          (+perdidaDeClientesPotencial +
+            +dañoPotencial +
+            +conflictosGremialesPosibles +
+            +incumplimientoLegal +
+            +perdidaDeImagen +
+            +costoCorreccion) / 6
+      }
+
+      if (createRiskAndOpportunityDto.consecuencia !== undefined && createRiskAndOpportunityDto.probabilidadDeOcurencia !== undefined) {
+        createRiskAndOpportunityDto.factorDeRiesgo = ((createRiskAndOpportunityDto.consecuencia - 1) * (createRiskAndOpportunityDto.probabilidadDeOcurencia - 1) / 16 * 9) + 1;
+      }
+
+      const createdRiskOpportunity = await this.riskOportunitiesModel.create(createRiskAndOpportunityDto);
+      const riskAndOpportunities = await this.riskOportunitiesModel.findById(createdRiskOpportunity._id)
+        .populate('contexto')
+        .populate('partesInteresadas')
+        .populate('process')
+        .exec();
+
+      if (riskAndOpportunities.consecuencia !== undefined) {
+        riskAndOpportunities.consecuencia = Number(riskAndOpportunities.consecuencia.toFixed(1));
+      }
+
+      if (riskAndOpportunities.probabilidad !== undefined) {
+        riskAndOpportunities.probabilidad = Number(riskAndOpportunities.probabilidad.toFixed(1));
+      }
+
+      if (riskAndOpportunities.factorDeRiesgo !== undefined) {
+        riskAndOpportunities.factorDeRiesgo = Number(riskAndOpportunities.factorDeRiesgo.toFixed(1));
+      }
+
+      return riskAndOpportunities;
+
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+    }
   }
-  async findAll(filter = {}): Promise<RiesgoOportunidad[]> {
-    return this.riskOportunitiesModel.find(filter)
+
+  async findAll() {
+    const riskOsOpportunities = await this.riskOportunitiesModel.find()
       .populate('contexto')
       .populate('partesInteresadas')
       .populate('process')
       .exec();
+
+    riskOsOpportunities.forEach(item => {
+      if (item.consecuencia !== undefined) {
+        item.consecuencia = Number(item.consecuencia.toFixed(1));
+      }
+
+      if (item.probabilidad !== undefined) {
+        item.probabilidad = Number(item.probabilidad.toFixed(1));
+      }
+
+      if (item.factorDeRiesgo !== undefined) {
+        item.factorDeRiesgo = Number(item.factorDeRiesgo.toFixed(1));
+      }
+    });
+
+    return riskOsOpportunities;
   }
 
   async findOne(id: string): Promise<RiesgoOportunidad> {
@@ -49,20 +124,79 @@ export class RiskAndOpportunitiesService {
 
   async update(id: string, updateRiskAndOpportunityDto: UpdateRiskAndOpportunityDto) {
     try {
+      // Apply the same calculation logic as in create method
+      const {
+        probabilidad,
+        ocurrencia,
+        perdidaDeClientesPotencial,
+        dañoPotencial,
+        conflictosGremialesPosibles,
+        incumplimientoLegal,
+        perdidaDeImagen,
+        costoCorreccion
+      } = updateRiskAndOpportunityDto;
+
+      // Recalculate probabilidadDeOcurencia if relevant fields are present
+      if (probabilidad !== undefined && ocurrencia !== undefined) {
+        const promedio = (+probabilidad + +ocurrencia) / 2;
+        updateRiskAndOpportunityDto.probabilidadDeOcurencia = promedio;
+      }
+
+      // Recalculate consecuencia if all relevant fields are present
+      if (
+        perdidaDeClientesPotencial !== undefined &&
+        dañoPotencial !== undefined &&
+        conflictosGremialesPosibles !== undefined &&
+        incumplimientoLegal !== undefined &&
+        perdidaDeImagen !== undefined &&
+        costoCorreccion !== undefined
+      ) {
+        updateRiskAndOpportunityDto.consecuencia =
+          (+perdidaDeClientesPotencial +
+            +dañoPotencial +
+            +conflictosGremialesPosibles +
+            +incumplimientoLegal +
+            +perdidaDeImagen +
+            +costoCorreccion) / 6;
+      }
+
+      // Recalculate factorDeRiesgo if necessary values are present or were just calculated
+      const consecuencia = updateRiskAndOpportunityDto.consecuencia;
+      const probabilidadDeOcurencia = updateRiskAndOpportunityDto.probabilidadDeOcurencia;
+
+      if (consecuencia !== undefined && probabilidadDeOcurencia !== undefined) {
+        updateRiskAndOpportunityDto.factorDeRiesgo = probabilidadDeOcurencia + consecuencia;
+      }
+
+      // Perform the update with the recalculated values
       const updatedRiskOpportunity = await this.riskOportunitiesModel.findByIdAndUpdate(
         id,
         updateRiskAndOpportunityDto,
         { new: true, runValidators: true }
-      ).populate('contexto')
+      )
+        .populate('contexto')
         .populate('partesInteresadas')
         .populate('process')
-        .exec()
+        .exec();
 
       if (!updatedRiskOpportunity) {
         throw new NotFoundException(`Riesgo/Oportunidad con ID ${id} no encontrado`);
       }
 
-      return updatedRiskOpportunity;
+      if (updatedRiskOpportunity.consecuencia !== undefined) {
+        updatedRiskOpportunity.consecuencia = Number(updatedRiskOpportunity.consecuencia.toFixed(1));
+      }
+
+      if (updatedRiskOpportunity.probabilidad !== undefined) {
+        updatedRiskOpportunity.probabilidad = Number(updatedRiskOpportunity.probabilidad.toFixed(1));
+      }
+
+      if (updatedRiskOpportunity.factorDeRiesgo !== undefined) {
+        updatedRiskOpportunity.factorDeRiesgo = Number(updatedRiskOpportunity.factorDeRiesgo.toFixed(1));
+      }
+
+      return updatedRiskOpportunity
+
     } catch (error) {
       if (error.name === 'CastError') {
         throw new BadRequestException('ID proporcionado no válido');

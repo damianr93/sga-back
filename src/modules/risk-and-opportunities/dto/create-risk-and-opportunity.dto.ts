@@ -20,43 +20,43 @@ export class CreateRiskAndOpportunityDto {
 
   @IsNotEmpty()
   @IsString()
-  description: string;
+  description: number;
 
   @IsOptional()
-  @IsString()
-  probabilidad?: string;
+  @IsNumber()
+  probabilidad?: number;
 
   @IsOptional()
-  @IsString()
-  ocurrencia?: string;
+  @IsNumber()
+  ocurrencia?: number;
 
   @IsOptional()
   @IsNumber()
   probabilidadDeOcurencia?: number;
 
   @IsOptional()
-  @IsString()
-  perdidaDeClientesPotencial?: string;
+  @IsNumber()
+  perdidaDeClientesPotencial?: number;
 
   @IsOptional()
-  @IsString()
-  dañoPotencial?: string;
+  @IsNumber()
+  dañoPotencial?: number;
 
   @IsOptional()
-  @IsString()
-  conflictosGremialesPosibles?: string;
+  @IsNumber()
+  conflictosGremialesPosibles?: number;
 
   @IsOptional()
-  @IsString()
-  incumplimientoLegal?: string;
+  @IsNumber()
+  incumplimientoLegal?: number;
 
   @IsOptional()
-  @IsString()
-  perdidaDeImagen?: string;
+  @IsNumber()
+  perdidaDeImagen?: number;
 
   @IsOptional()
-  @IsString()
-  costoCorreccion?: string;
+  @IsNumber()
+  costoCorreccion?: number;
 
   @IsOptional()
   @IsNumber()
