@@ -21,6 +21,8 @@ import { ProcessDefinitionModule } from './modules/process-definition/process-de
 import { AuthModule } from './modules/auth/auth.module';
 import { TargetsModule } from './modules/targets/targets.module';
 import { RiskAndOpportunitiesModule } from './modules/risk-and-opportunities/risk-and-opportunities.module';
+import { CriteriosModule } from './modules/criterios/criterios.module';
+import { EnvironmentalAspectsModule } from './modules/environmental-aspects/environmental-aspects.module';
 
 
 @Module({
@@ -43,7 +45,9 @@ import { RiskAndOpportunitiesModule } from './modules/risk-and-opportunities/ris
     ProcessDefinitionModule,
     TargetsModule,
     AuthModule,
-    RiskAndOpportunitiesModule
+    RiskAndOpportunitiesModule,
+    CriteriosModule,
+    EnvironmentalAspectsModule
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],
