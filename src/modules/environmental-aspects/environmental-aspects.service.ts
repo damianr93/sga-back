@@ -10,35 +10,69 @@ export class EnvironmentalAspectsService {
   constructor(
     @Inject('ENVIROMENTAL-ASPECTS-MODEL')
     private readonly enviromentalAspectsModel: Model<EnvironmentalAspects>
-  ){}
+  ) { }
 
   async create(createEnvironmentalAspectDto: CreateEnvironmentalAspectDto) {
     try {
-      
+
       const createdEnvironmentalAspect = await this.enviromentalAspectsModel.create(createEnvironmentalAspectDto);
 
       return createdEnvironmentalAspect;
 
     } catch (error) {
-      
+
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
 
     };
   };
 
-  findAll() {
-    return `This action returns all environmentalAspects`;
+  async findAll() {
+    try {
+
+      const enviromentalAspects = await this.enviromentalAspectsModel.find();
+
+      return enviromentalAspects;
+
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    };
+  };
+
+  async findOne(id: string) {
+    try {
+
+      const enviromentalAspect = await this.enviromentalAspectsModel.findById(id);
+
+      return enviromentalAspect;
+
+    } catch (error) {
+
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} environmentalAspect`;
-  }
+  async update(id: string, updateEnvironmentalAspectDto: UpdateEnvironmentalAspectDto) {
+    try {
 
-  update(id: number, updateEnvironmentalAspectDto: UpdateEnvironmentalAspectDto) {
-    return `This action updates a #${id} environmentalAspect`;
-  }
+      const updatedEnviromentalAspect = await this.enviromentalAspectsModel.findByIdAndUpdate(id, updateEnvironmentalAspectDto, { new: true });
 
-  remove(id: number) {
-    return `This action removes a #${id} environmentalAspect`;
-  }
-}
+      return updatedEnviromentalAspect;
+
+    } catch (error) {
+
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+
+    };
+  };
+
+  async remove(id: string) {
+    try {
+      
+      const removedEnviromentalAspect = await this.enviromentalAspectsModel.findByIdAndDelete(id)
+
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    };
+  };
+};

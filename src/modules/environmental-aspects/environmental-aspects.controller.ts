@@ -19,16 +19,16 @@ export class EnvironmentalAspectsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.environmentalAspectsService.findOne(+id);
+    return this.environmentalAspectsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEnvironmentalAspectDto: UpdateEnvironmentalAspectDto) {
-    return this.environmentalAspectsService.update(+id, updateEnvironmentalAspectDto);
+    return this.environmentalAspectsService.update(id, updateEnvironmentalAspectDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.environmentalAspectsService.remove(+id);
+    return this.environmentalAspectsService.remove(id);
   }
 }
