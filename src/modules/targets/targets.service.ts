@@ -30,7 +30,7 @@ export class TargetsService {
       return createdTarget;
   
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -42,7 +42,7 @@ export class TargetsService {
       
     } catch (error) {
 
-      return new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      return new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
       
     }
   }
@@ -55,7 +55,7 @@ export class TargetsService {
       
     } catch (error) {
 
-      return new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      return new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
       
     }
   }
@@ -68,7 +68,7 @@ export class TargetsService {
       
     } catch (error) {
 
-      return new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      return new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
       
     }
   }
@@ -81,7 +81,7 @@ export class TargetsService {
       
     } catch (error) {
 
-      return new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      return new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
       
     }
   }

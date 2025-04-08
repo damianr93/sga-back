@@ -14,10 +14,9 @@ export class CriteriosService {
 
   async create(createCriterioDto: CreateCriterioDto) {
     try {
-      // Extraemos el type del DTO
+   
       const { type } = createCriterioDto;
 
-      // Buscamos si ya existe un criterio con este tipo
       const foundCriterio = await this.criteriosModel.findOne({ type });
 
       if (foundCriterio) {
@@ -27,14 +26,14 @@ export class CriteriosService {
         );
       }
 
-      // Creamos el nuevo criterio
+ 
       const createdCriterio = await this.criteriosModel.create(createCriterioDto);
 
       return createdCriterio;
     } catch (error) {
-      // Manejo más detallado de errores
+     
       if (error instanceof HttpException) {
-        throw error; // Re-lanzamos errores HTTP que ya hemos creado
+        throw error;
       }
 
       throw new HttpException(
@@ -72,7 +71,6 @@ export class CriteriosService {
         throw error;
       }
 
-      // Error específico para IDs inválidos de MongoDB
       if (error.name === 'CastError') {
         throw new HttpException(
           'ID de criterio inválido',
@@ -108,7 +106,6 @@ export class CriteriosService {
         throw error;
       }
 
-      // Error específico para IDs inválidos de MongoDB
       if (error.name === 'CastError') {
         throw new HttpException(
           'ID de criterio inválido',
@@ -143,7 +140,6 @@ export class CriteriosService {
         throw error;
       }
 
-      // Error específico para IDs inválidos de MongoDB
       if (error.name === 'CastError') {
         throw new HttpException(
           'ID de criterio inválido',

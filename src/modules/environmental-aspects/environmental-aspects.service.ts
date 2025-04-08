@@ -21,7 +21,7 @@ export class EnvironmentalAspectsService {
 
     } catch (error) {
 
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 
     };
   };
@@ -29,12 +29,16 @@ export class EnvironmentalAspectsService {
   async findAll() {
     try {
 
-      const enviromentalAspects = await this.enviromentalAspectsModel.find();
+      const enviromentalAspects = await this.enviromentalAspectsModel.find()
+      .populate('context')
+      .populate('interestedParties')
+      .populate('process')
+      .exec();
 
       return enviromentalAspects;
 
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     };
   };
 
@@ -47,7 +51,7 @@ export class EnvironmentalAspectsService {
 
     } catch (error) {
 
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
 
     }
   }
@@ -61,7 +65,7 @@ export class EnvironmentalAspectsService {
 
     } catch (error) {
 
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
 
     };
   };
@@ -72,7 +76,7 @@ export class EnvironmentalAspectsService {
       const removedEnviromentalAspect = await this.enviromentalAspectsModel.findByIdAndDelete(id)
 
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     };
   };
 };

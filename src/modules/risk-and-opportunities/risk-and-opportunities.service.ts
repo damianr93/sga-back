@@ -73,7 +73,7 @@ export class RiskAndOpportunitiesService {
       return riskAndOpportunities;
 
     } catch (error) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
