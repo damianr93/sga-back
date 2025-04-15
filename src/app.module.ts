@@ -23,6 +23,7 @@ import { TargetsModule } from './modules/targets/targets.module';
 import { RiskAndOpportunitiesModule } from './modules/risk-and-opportunities/risk-and-opportunities.module';
 import { CriteriosModule } from './modules/criterios/criterios.module';
 import { EnvironmentalAspectsModule } from './modules/environmental-aspects/environmental-aspects.module';
+import { RiskOpportunityActionsModule } from './modules/risk-opportunity-actions/risk-opportunity-actions.module';
 
 
 @Module({
@@ -47,7 +48,8 @@ import { EnvironmentalAspectsModule } from './modules/environmental-aspects/envi
     AuthModule,
     RiskAndOpportunitiesModule,
     CriteriosModule,
-    EnvironmentalAspectsModule
+    EnvironmentalAspectsModule,
+    RiskOpportunityActionsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MyLogger],

@@ -79,7 +79,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'valor numero que representa si existe o no un requisito legal'
     })
     @IsNumber()
-    @IsOptional()
     legalRequeriment: Number;
 
     @ApiProperty({
@@ -87,7 +86,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'valor numero que representa si se gestiona o no un requisito legal'
     })
     @IsNumber()
-    @IsOptional()
     managementLegalRequeriment: Number;
 
     @ApiProperty({
@@ -95,7 +93,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Identificacion de la ley que abarca el aspecto ambiental'
     })
     @IsString()
-    @IsOptional()
     legalRequirementNumberOrId: String;
 
     @ApiProperty({
@@ -103,7 +100,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Descripcion de la oblicacion que genera el requisito legal'
     })
     @IsString()
-    @IsOptional()
     legalRequirementDescrption: String; //!Relacion con otro modulo, para requisitos legales
 
     @ApiProperty({
@@ -119,7 +115,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Valor numérico de importancia para las partes interesadas'
     })
     @IsNumber()
-    @IsOptional()
     interestedPartiesValue: Number;
 
     @ApiProperty({
@@ -127,7 +122,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Valor numérico que representa la gestión de requisitos de las partes interesadas'
     })
     @IsNumber()
-    @IsOptional()
     managementRequerimentPart: Number;
 
     @ApiProperty({
@@ -135,7 +129,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Frecuencia con la que ocurre el impacto ambiental'
     })
     @IsNumber()
-    @IsOptional()
     impactFrequency: Number;
 
     @ApiProperty({
@@ -143,7 +136,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Gravedad del impacto ambiental'
     })
     @IsNumber()
-    @IsOptional()
     severityImpact: Number;
 
     @ApiProperty({
@@ -151,7 +143,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Extensión del impacto ambiental'
     })
     @IsNumber()
-    @IsOptional()
     extentImpact: Number;
 
     @ApiProperty({
@@ -159,7 +150,6 @@ export class CreateEnvironmentalAspectDto {
         description: 'Valor de significancia calculado para el aspecto ambiental'
     })
     @IsNumber()
-    @IsOptional()
     significance: Number;
 
 }

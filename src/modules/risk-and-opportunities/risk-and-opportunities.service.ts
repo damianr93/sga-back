@@ -1,13 +1,20 @@
 import { Model } from "mongoose";
 import { RiesgoOportunidad } from "./interface/risk-and-opportunities.interface";
-import { BadRequestException, HttpException, HttpStatus, Inject, NotFoundException } from "@nestjs/common";
+import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateRiskAndOpportunityDto } from "./dto/create-risk-and-opportunity.dto";
 import { UpdateRiskAndOpportunityDto } from "./dto/update-risk-and-opportunity.dto";
+import { Criterios } from "../criterios/interface/criterios.interface";
+import { IRiskOpportunityActions } from "../risk-opportunity-actions/interface/risk-opportunity-actions.interface";
 
+@Injectable()
 export class RiskAndOpportunitiesService {
   constructor(
     @Inject('RISK_OPPORTUNITIES_MODEL')
-    private readonly riskOportunitiesModel: Model<RiesgoOportunidad>
+    private readonly riskOportunitiesModel: Model<RiesgoOportunidad>,
+    @Inject('CRITERIOS-MODEL')
+    private readonly criteriosModel: Model<Criterios>,
+    @Inject('RISK-OPPORTUNITY-ACTIONS')
+    private readonly riskOpportunityActionsModel: Model<IRiskOpportunityActions>
   ) { }
 
   async create(createRiskAndOpportunityDto: CreateRiskAndOpportunityDto): Promise<RiesgoOportunidad> {
@@ -70,6 +77,18 @@ export class RiskAndOpportunitiesService {
         riskAndOpportunities.factorDeRiesgo = Number(riskAndOpportunities.factorDeRiesgo.toFixed(1));
       }
 
+      // Verificar umbral y crear acción si es necesario
+      const criterio = await this.criteriosModel.findOne({ type: 'umbral-riesgo' });
+
+      if (criterio && riskAndOpportunities && riskAndOpportunities.factorDeRiesgo !== undefined) {
+        if (+riskAndOpportunities.factorDeRiesgo > +criterio.valor) {
+          await this.riskOpportunityActionsModel.create({
+            riskOrOpportunity: riskAndOpportunities.id,
+            riskOrOpportunityModel: 'risk-opportunities'
+          });
+        }
+      }
+
       return riskAndOpportunities;
 
     } catch (error) {
@@ -124,6 +143,12 @@ export class RiskAndOpportunitiesService {
 
   async update(id: string, updateRiskAndOpportunityDto: UpdateRiskAndOpportunityDto) {
     try {
+      // Obtener los datos actuales antes de la actualización
+      const currentRiskOpportunity = await this.riskOportunitiesModel.findById(id);
+      if (!currentRiskOpportunity) {
+        throw new NotFoundException(`Riesgo/Oportunidad con ID ${id} no encontrado`);
+      }
+
       // Apply the same calculation logic as in create method
       const {
         probabilidad,
@@ -140,32 +165,53 @@ export class RiskAndOpportunitiesService {
       if (probabilidad !== undefined && ocurrencia !== undefined) {
         const promedio = (+probabilidad + +ocurrencia) / 2;
         updateRiskAndOpportunityDto.probabilidadDeOcurencia = promedio;
+      } else if (probabilidad !== undefined && currentRiskOpportunity.ocurrencia !== undefined) {
+        const promedio = (+probabilidad + +currentRiskOpportunity.ocurrencia) / 2;
+        updateRiskAndOpportunityDto.probabilidadDeOcurencia = promedio;
+      } else if (ocurrencia !== undefined && currentRiskOpportunity.probabilidad !== undefined) {
+        const promedio = (+currentRiskOpportunity.probabilidad + +ocurrencia) / 2;
+        updateRiskAndOpportunityDto.probabilidadDeOcurencia = promedio;
       }
 
-      // Recalculate consecuencia if all relevant fields are present
+      // Determinar valores para cálculo de consecuencia
+      const values = {
+        perdidaDeClientesPotencial: perdidaDeClientesPotencial !== undefined ? +perdidaDeClientesPotencial : +currentRiskOpportunity.perdidaDeClientesPotencial,
+        dañoPotencial: dañoPotencial !== undefined ? +dañoPotencial : +currentRiskOpportunity.dañoPotencial,
+        conflictosGremialesPosibles: conflictosGremialesPosibles !== undefined ? +conflictosGremialesPosibles : +currentRiskOpportunity.conflictosGremialesPosibles,
+        incumplimientoLegal: incumplimientoLegal !== undefined ? +incumplimientoLegal : +currentRiskOpportunity.incumplimientoLegal,
+        perdidaDeImagen: perdidaDeImagen !== undefined ? +perdidaDeImagen : +currentRiskOpportunity.perdidaDeImagen,
+        costoCorreccion: costoCorreccion !== undefined ? +costoCorreccion : +currentRiskOpportunity.costoCorreccion
+      };
+
+      // Recalcular consecuencia si hay cambios en alguno de los factores
       if (
-        perdidaDeClientesPotencial !== undefined &&
-        dañoPotencial !== undefined &&
-        conflictosGremialesPosibles !== undefined &&
-        incumplimientoLegal !== undefined &&
-        perdidaDeImagen !== undefined &&
+        perdidaDeClientesPotencial !== undefined ||
+        dañoPotencial !== undefined ||
+        conflictosGremialesPosibles !== undefined ||
+        incumplimientoLegal !== undefined ||
+        perdidaDeImagen !== undefined ||
         costoCorreccion !== undefined
       ) {
         updateRiskAndOpportunityDto.consecuencia =
-          (+perdidaDeClientesPotencial +
-            +dañoPotencial +
-            +conflictosGremialesPosibles +
-            +incumplimientoLegal +
-            +perdidaDeImagen +
-            +costoCorreccion) / 6;
+          (values.perdidaDeClientesPotencial +
+            values.dañoPotencial +
+            values.conflictosGremialesPosibles +
+            values.incumplimientoLegal +
+            values.perdidaDeImagen +
+            values.costoCorreccion) / 6;
       }
 
-      // Recalculate factorDeRiesgo if necessary values are present or were just calculated
-      const consecuencia = updateRiskAndOpportunityDto.consecuencia;
-      const probabilidadDeOcurencia = updateRiskAndOpportunityDto.probabilidadDeOcurencia;
+      // Recalcular factorDeRiesgo si hay cambios en consecuencia o probabilidadDeOcurencia
+      const consecuencia = updateRiskAndOpportunityDto.consecuencia !== undefined 
+        ? updateRiskAndOpportunityDto.consecuencia 
+        : currentRiskOpportunity.consecuencia;
+        
+      const probabilidadDeOcurencia = updateRiskAndOpportunityDto.probabilidadDeOcurencia !== undefined 
+        ? updateRiskAndOpportunityDto.probabilidadDeOcurencia 
+        : currentRiskOpportunity.probabilidadDeOcurencia;
 
       if (consecuencia !== undefined && probabilidadDeOcurencia !== undefined) {
-        updateRiskAndOpportunityDto.factorDeRiesgo = probabilidadDeOcurencia + consecuencia;
+        updateRiskAndOpportunityDto.factorDeRiesgo = ((consecuencia - 1) * (probabilidadDeOcurencia - 1) / 16 * 9) + 1;
       }
 
       // Perform the update with the recalculated values
@@ -195,7 +241,30 @@ export class RiskAndOpportunitiesService {
         updatedRiskOpportunity.factorDeRiesgo = Number(updatedRiskOpportunity.factorDeRiesgo.toFixed(1));
       }
 
-      return updatedRiskOpportunity
+      // Verificar umbral y gestionar acciones según sea necesario
+      const criterio = await this.criteriosModel.findOne({ type: 'umbral-riesgo' });
+      
+      if (criterio && updatedRiskOpportunity.factorDeRiesgo !== undefined) {
+        // Verificar si existe una acción de riesgo/oportunidad asociada
+        const existingAction = await this.riskOpportunityActionsModel.findOne({
+          riskOrOpportunity: updatedRiskOpportunity.id,
+          riskOrOpportunityModel: 'risk-opportunities'
+        });
+
+        // Si el factor de riesgo supera el umbral y no existe acción, crear una
+        if (+updatedRiskOpportunity.factorDeRiesgo > +criterio.valor && !existingAction) {
+          await this.riskOpportunityActionsModel.create({
+            riskOrOpportunity: updatedRiskOpportunity.id,
+            riskOrOpportunityModel: 'risk-opportunities'
+          });
+        } 
+        // Si el factor de riesgo NO supera el umbral pero existe una acción, eliminarla
+        else if (+updatedRiskOpportunity.factorDeRiesgo <= +criterio.valor && existingAction) {
+          await this.riskOpportunityActionsModel.findByIdAndDelete(existingAction.id);
+        }
+      }
+
+      return updatedRiskOpportunity;
 
     } catch (error) {
       if (error.name === 'CastError') {
@@ -215,6 +284,12 @@ export class RiskAndOpportunitiesService {
       if (!result) {
         throw new NotFoundException(`Riesgo/Oportunidad con ID ${id} no encontrado`);
       }
+
+      // Eliminar cualquier acción de riesgo/oportunidad asociada
+      await this.riskOpportunityActionsModel.deleteMany({
+        riskOrOpportunity: id,
+        riskOrOpportunityModel: 'risk-opportunities'
+      });
 
       return { deleted: true };
     } catch (error) {
