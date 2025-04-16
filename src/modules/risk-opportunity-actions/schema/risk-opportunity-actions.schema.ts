@@ -1,16 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 
 const taskStepsSchema = new Schema({
-    stepNumber:Number,
+    stepNumber: Number,
     task: String,
     completed: Boolean
 });
 
 const tasksSchema = new Schema({
-    tasksDescription: String,
+    objetivo: String,
     responsible: String,
-    taskSteps: [taskStepsSchema]
+    taskSteps: [taskStepsSchema]  
 });
+
 
 export const riskOpportunityActionsSchema = new mongoose.Schema({
     riskOrOpportunity: {
@@ -23,6 +24,14 @@ export const riskOpportunityActionsSchema = new mongoose.Schema({
         required: true,
         enum: ['enviromental-aspects', 'riskAndOpportunities']
     },
-    Actions: [tasksSchema],
-    createdAt:String
+    action: tasksSchema,  
+    createdAt: String
+});
+
+riskOpportunityActionsSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret, options) {
+        delete ret._id;
+    },
 });

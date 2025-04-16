@@ -1,15 +1,21 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateRiskOpportunityActionDto } from './dto/create-risk-opportunity-action.dto';
 import { UpdateRiskOpportunityActionDto } from './dto/update-risk-opportunity-action.dto';
-import { IRiskOpportunityActions } from './interface/risk-opportunity-actions.interface';
 import { Model } from 'mongoose';
+import { EnvironmentalAspects } from '../environmental-aspects/interface/environmental-aspects.interface';
+import { RiesgoOportunidad } from '../risk-and-opportunities/interface/risk-and-opportunities.interface';
+import { IRiskOpportunityActions } from './interface/risk-opportunity-actions.interface';
 
 @Injectable()
 export class RiskOpportunityActionsService {
 
   constructor(
     @Inject('RISK-OPPORTUNITY-ACTIONS')
-    private readonly riskOpportunityModel: Model<IRiskOpportunityActions>
+    private readonly riskOpportunityModel: Model<IRiskOpportunityActions>,
+    @Inject('ENVIROMENTAL-ASPECTS-MODEL')
+    private readonly environmentalAspectsModel: Model<EnvironmentalAspects>,
+    @Inject('RISK_OPPORTUNITIES_MODEL')
+    private readonly riskOportunitiesModel: Model<RiesgoOportunidad>,
   ) { }
 
   async create(createRiskOpportunityActionDto: CreateRiskOpportunityActionDto) {
@@ -37,13 +43,31 @@ export class RiskOpportunityActionsService {
   async findAll() {
     try {
 
-      const risksOppotunitiesActions = await this.riskOpportunityModel.find()
-
-      return risksOppotunitiesActions;
+      const risksOpportunitiesActions = await this.riskOpportunityModel.find();
 
 
+      const populatedResults = [];
+
+
+      for (const doc of risksOpportunitiesActions) {
+
+        const plainDoc = doc.toObject();
+
+
+        if (doc.riskOrOpportunityModel === 'enviromental-aspects') {
+          const referencedDoc = await this.environmentalAspectsModel.findById(doc.riskOrOpportunity);
+          plainDoc.riskOrOpportunity = referencedDoc;
+        } else if (doc.riskOrOpportunityModel === 'riskAndOpportunities') {
+          const referencedDoc = await this.riskOportunitiesModel.findById(doc.riskOrOpportunity);
+          plainDoc.riskOrOpportunity = referencedDoc;
+        }
+
+        populatedResults.push(plainDoc);
+      }
+
+      return populatedResults;
     } catch (error) {
-      throw new HttpException('Error al buscar los registro', HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

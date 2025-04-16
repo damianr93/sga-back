@@ -1,7 +1,7 @@
+import { IsString, IsEnum, IsNotEmpty, ValidateNested, IsArray, IsNumber, IsBoolean, ArrayMinSize } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsEnum, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 
-export class TaskStepsDto {
+export class TaskStepDto {
   @IsNumber()
   @IsNotEmpty()
   stepNumber: number;
@@ -11,14 +11,13 @@ export class TaskStepsDto {
   task: string;
 
   @IsBoolean()
-  @IsOptional()
-  completed: boolean = false;
+  completed: boolean;
 }
 
-export class TasksDto {
+export class TaskDto {
   @IsString()
   @IsNotEmpty()
-  tasksDescription: string;
+  objetivo: string;
 
   @IsString()
   @IsNotEmpty()
@@ -26,27 +25,24 @@ export class TasksDto {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => TaskStepsDto)
-  taskSteps: TaskStepsDto[];
+  @ArrayMinSize(1)
+  @Type(() => TaskStepDto)
+  taskSteps: TaskStepDto[];
 }
 
 export class CreateRiskOpportunityActionDto {
-  @IsMongoId()
+  @IsString()
   @IsNotEmpty()
   riskOrOpportunity: string;
 
-  @IsEnum(['enviromental-aspects', 'riskAndOpportunities'], { 
-    message: 'riskOrOpportunityModel must be either "enviromental-aspects" or "riskAndOpportunities"' 
-  })
+  @IsEnum(['enviromental-aspects', 'riskAndOpportunities'])
   @IsNotEmpty()
   riskOrOpportunityModel: 'enviromental-aspects' | 'riskAndOpportunities';
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => TasksDto)
-  Actions: TasksDto[];
+  @ValidateNested()
+  @Type(() => TaskDto)
+  action: TaskDto;
 
   @IsString()
-  @IsOptional()
-  createdAt?: string;
+  createdAt: string;
 }
